@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Distribuciones\Distribucion.cs" />
+    <Compile Include="Distribuciones\Exponencial.cs" />
+    <Compile Include="Distribuciones\Normal.cs" />
+    <Compile Include="Distribuciones\NormalBoxMuller.cs" />
+    <Compile Include="Distribuciones\NormalConvolucion.cs" />
+    <Compile Include="Distribuciones\Poisson.cs" />
+    <Compile Include="Distribuciones\Uniforme.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +82,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Presentaciones\" />
+    <Folder Include="PruebasDeBondad\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
