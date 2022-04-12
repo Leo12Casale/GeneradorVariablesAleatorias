@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TP3_VariablesAleatorias.Distribuciones
 {
-    public interface Distribucion
+    public class Normal : Distribucion
     {
     }
 }
