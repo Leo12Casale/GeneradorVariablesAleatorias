@@ -26,7 +26,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public double[] SerieGenerada { get => serieGenerada; set => serieGenerada = value; }
 
         //Métodos de la clase
-        public double[] generarSerie(int cantidadNumerosAGenerar)
+        public override double[] generarSerie(int cantidadNumerosAGenerar)
         {
             this.serieGenerada = new double[cantidadNumerosAGenerar];
             //Creamos los números RNDs

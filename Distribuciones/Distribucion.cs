@@ -19,5 +19,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
             }
             return RNDs;
         }
+
+        //Metodo de marcado
+        public abstract double[] generarSerie(int cantidadNumerosAGenerar);
     }
 }

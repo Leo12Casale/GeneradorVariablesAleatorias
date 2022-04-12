@@ -8,5 +8,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
 {
     public class Normal : Distribucion
     {
+        public override double[] generarSerie(int cantidadNumerosAGenerar) {
+            return null;
+        }
     }
 }

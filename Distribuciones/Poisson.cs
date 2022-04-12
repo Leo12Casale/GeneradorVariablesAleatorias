@@ -8,5 +8,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
 {
     public class Poisson : Distribucion
     {
+        public override double[] generarSerie(int cantidadNumerosAGenerar) {
+            return null;
+        }
     }
 }
