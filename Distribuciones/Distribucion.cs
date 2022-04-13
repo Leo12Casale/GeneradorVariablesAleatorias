@@ -22,5 +22,19 @@ namespace TP3_VariablesAleatorias.Distribuciones
 
         //Metodo de marcado
         public abstract double[] generarSerie(int cantidadNumerosAGenerar);
+
+        //Poisson no tiene desde y hasta, pero que el desde y el hasta retornen el mismo numero. Ej: => [7;7]
+        public abstract double[] getIntervalosDesde();
+        public abstract double[] getIntervalosHasta();
+
+        // Especializado para cada distribución con el uso de la probabilidad que corresponda
+        public abstract double[] getFrecuenciasEsperadas();
+        public abstract double[] getFrecuenciasObservadas();
+
+        // Getter de la variable con la cantidad de datos empíricos de cada distribución
+        public abstract int getCantDatosEmpiricos();
+
+        //La necesitamos si o si, porque la tabla es diferente (una columna [x;y;...] en lugar de Desde y Hasta)
+        public abstract bool esPoisson();
     }
 }
