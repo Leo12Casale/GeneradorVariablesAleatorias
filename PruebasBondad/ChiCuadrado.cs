@@ -102,17 +102,16 @@ namespace TP3_VariablesAleatorias.PruebasBondad
         /// </summary>
         /// <param name="indiceFila">índice de la fila a obtener</param>
         /// <returns>
-        /// Tuple <
-        /// , string: cadena del intervalo => [0 - 200) o 7; 8; 9; 10 (Poisson)
+        /// (string: cadena del intervalo => [0 - 200) o 7; 8; 9; 10 (Poisson)
         /// , double: frecuencia observada de la fila
         /// , double: frecuencia esperada de la fila
         /// , double: chi de la fila
         /// , double: chi acumulado
-        /// >
+        /// )
         /// </returns>
-        public Tuple<string, double, double, double, double> obtenerFila(int indiceFila)
+        public (string, double, double, double, double) obtenerFila(int indiceFila)
         {
-            if (indiceFila < 0 || indiceFila > this.intervalosHasta.Length - 1) return Tuple.Create("-", -1.0, -1.0, -1.0, -1.0);
+            if (indiceFila < 0 || indiceFila > this.intervalosHasta.Length - 1) return ("-", -1.0, -1.0, -1.0, -1.0);
             string columnaIntervalos = intervalosDesde[indiceFila].ToString();
             if(distribucion.esPoisson())
             { 
@@ -124,7 +123,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
                 columnaIntervalos = "[" + columnaIntervalos + " - " + intervalosHasta[indiceFila] + ")";
             }
 
-            return Tuple.Create(columnaIntervalos, frecuenciasObservadas[indiceFila], frecuenciasEsperadas[indiceFila], columnaChis[indiceFila], chisAcumulado[indiceFila]);
+            return (columnaIntervalos, frecuenciasObservadas[indiceFila], frecuenciasEsperadas[indiceFila], columnaChis[indiceFila], chisAcumulado[indiceFila]);
         }
 
         public override bool esChiCuadrado() { return true; }

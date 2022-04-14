@@ -15,7 +15,13 @@ namespace TP3_VariablesAleatorias.Distribuciones
         { 
             this.distribucion = distribucion;
         }
-        public abstract Tuple<bool, double, double, string> realizarPrueba(); 
+        public abstract Tuple<bool, double, double, string> realizarPrueba();
+
+
+        /// <summary>
+        /// Logica de interpretación de los resultados de la prueba de bondad
+        /// </summary>
+        /// <returns>true si NO se rechaza la hipotesis</returns>
         protected abstract bool noSeRechaza();
         protected string generarCadenaResultado()
         {
@@ -27,6 +33,12 @@ namespace TP3_VariablesAleatorias.Distribuciones
             return resultado;
         }
 
+        /// <summary>
+        /// Metodo para saber el tipo de prueba de bondad instanciada. Util para la hora de invocar al método
+        /// obtenerFila(int) porque el tipo de retorno de cada prueba de bondad es distinto (depende del número 
+        /// de columnas) y por lo tanto no puede usarse polimorfismo (o nosotros no sabemos cómo)
+        /// </summary>
+        /// <returns></returns>
         public abstract bool esChiCuadrado();
     }
 
