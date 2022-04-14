@@ -6,10 +6,24 @@ using System.Threading.Tasks;
 
 namespace TP3_VariablesAleatorias.Distribuciones
 {
-    public class Normal : Distribucion
+    public abstract class Normal : Distribucion
     {
-        public override double[] generarSerie(int cantidadNumerosAGenerar) {
-            return null;
+        protected double media;
+        protected double desviacionEstandar;
+        
+        public Normal(double media, double desviacionEstandar){
+            this.Media = media;
+            this.DesviacionEstandar = desviacionEstandar;
+        }
+
+        public double Media { get => media; set => media = value; }
+        public double DesviacionEstandar { get => desviacionEstandar; set => desviacionEstandar = value; }
+
+
+        //Devuelve dos por que se utiliza la media y la desviacion estandar para el calculo de la frecuencia
+        //esperada
+        public override int getCantDatosEmpiricos(){
+            return 2;
         }
     }
 }

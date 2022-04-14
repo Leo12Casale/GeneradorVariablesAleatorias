@@ -8,5 +8,59 @@ namespace TP3_VariablesAleatorias.Distribuciones
 {
     public class NormalBoxMuller : Normal
     {
+        public NormalBoxMuller(double media, double desviacionEstandar) : base(media, desviacionEstandar) { }
+        
+        
+        public override double[] generarSerie(int cantidadNumerosAGenerar)
+        {
+            //Variable para controlar que la cantidad de RND sean pares
+            int cantidadRND = cantidadNumerosAGenerar;
+            this.SerieGenerada = new double[cantidadNumerosAGenerar];
+            //Creamos los números RNDs
+            //Cheuquea cantidad de numeros sea par, para usar randoms de a pares.
+            if (cantidadNumerosAGenerar % 2 != 0){ cantidadRND += 1;}
+            double[] numerosRND = generarRNDs(cantidadRND);
+            //Generamos los números aleatorios uniformes
+            int j;
+            for (int i = 0; i < cantidadNumerosAGenerar; i += 2)
+            {
+                j = i + 1;
+                SerieGenerada[i] = (Math.Sqrt(-2 * Math.Log(numerosRND[i])) * Math.Cos(2 * Math.PI * numerosRND[j])) * this.desviacionEstandar + this.media;
+                //Chequeo de que la cantidad generada de numeros aleatorios no supere la cantidad solicitada
+                if (j > cantidadNumerosAGenerar) { break; }
+                SerieGenerada[j] = (Math.Sqrt(-2 * Math.Log(numerosRND[i])) * Math.Sin(2 * Math.PI * numerosRND[j])) * this.desviacionEstandar + this.media;
+            }
+            return SerieGenerada;
+        }
+
+        public override double[] getFrecuenciasEsperadas()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double[] getFrecuenciasObservadas()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double[] getIntervalosDesde()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double[] getIntervalosHasta()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int getNMuestras()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double[] getProbabilidadEsperada()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

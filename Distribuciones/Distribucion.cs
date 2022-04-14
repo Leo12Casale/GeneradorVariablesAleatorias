@@ -8,6 +8,10 @@ namespace TP3_VariablesAleatorias.Distribuciones
 {
     public abstract class Distribucion
     {
+        private double[] serieGenerada;
+
+        protected double[] SerieGenerada { get => serieGenerada; set => serieGenerada = value; }
+
         protected double[] generarRNDs(int cantidadRNDsNecesarios)
         {
             double[] RNDs = new double[cantidadRNDsNecesarios];
@@ -18,6 +22,11 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 RNDs[i] = randNum.NextDouble();
             }
             return RNDs;
+        }
+
+         //La necesitamos si o si, porque la tabla es diferente (una columna [x;y;...] en lugar de Desde y Hasta)
+        public virtual bool esPoisson(){
+            return false;
         }
 
         //Metodo de marcado
@@ -34,8 +43,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         // Getter de la variable con la cantidad de datos empíricos de cada distribución
         public abstract int getCantDatosEmpiricos();
 
-        //La necesitamos si o si, porque la tabla es diferente (una columna [x;y;...] en lugar de Desde y Hasta)
-        public abstract bool esPoisson();
+       
 
         public abstract int getNMuestras();
 
