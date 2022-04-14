@@ -9,13 +9,11 @@ namespace TP3_VariablesAleatorias.PruebasBondad
 {
     public class ChiCuadrado : PruebaBondad
     {
-        private Dictionary<double, double> tabla = new Dictionary<double, double> { { 1, 003.8400 }, { 2, 005.9900 }, { 3, 007.8100 }, { 4, 009.4900 }, { 5, 011.1000 }, { 6, 012.6000 }, { 7, 014.1000 }, { 8, 015.5000 }, { 9, 016.9000 }, { 10, 018.3000 }, { 11, 019.7000 }, { 12, 021.0000 }, { 13, 022.4000 }, { 14, 023.7000 }, { 15, 025.0000 }, { 16, 026.3000 }, { 17, 027.6000 }, { 18, 029.8000 }, { 19, 030.1000 }, { 20, 031.4000 }, { 21, 032.7000 }, { 22, 033.9000 }, { 23, 035.2000 }, { 24, 036.4000 }, { 25, 037.7000 }, { 26, 038.9000 }, { 27, 040.1000 }, { 28, 041.3000 }, { 29, 042.6000 }, { 30, 043.8000 }, { 40, 055.8000 }, { 50, 067.5000 }, { 60, 079.1000 }, { 70, 090.5000 }, { 80, 101.9000 }, { 90, 113.1000 }, { 100, 124.3000 } };
-
         private double chiCalculado, chiTabulado;
-        private double[] intervalosDesde, intervalosHasta, frecuenciasObservadas, frecuenciasEsperadas, columnaChis, chisAcumulado;
+        private double[] columnaChis, chisAcumulado;
         public ChiCuadrado(Distribucion distribucion) : base(distribucion)
-        {
-
+        { 
+            tabla = new Dictionary<double, double> { { 1, 003.8400 }, { 2, 005.9900 }, { 3, 007.8100 }, { 4, 009.4900 }, { 5, 011.1000 }, { 6, 012.6000 }, { 7, 014.1000 }, { 8, 015.5000 }, { 9, 016.9000 }, { 10, 018.3000 }, { 11, 019.7000 }, { 12, 021.0000 }, { 13, 022.4000 }, { 14, 023.7000 }, { 15, 025.0000 }, { 16, 026.3000 }, { 17, 027.6000 }, { 18, 029.8000 }, { 19, 030.1000 }, { 20, 031.4000 }, { 21, 032.7000 }, { 22, 033.9000 }, { 23, 035.2000 }, { 24, 036.4000 }, { 25, 037.7000 }, { 26, 038.9000 }, { 27, 040.1000 }, { 28, 041.3000 }, { 29, 042.6000 }, { 30, 043.8000 }, { 40, 055.8000 }, { 50, 067.5000 }, { 60, 079.1000 }, { 70, 090.5000 }, { 80, 101.9000 }, { 90, 113.1000 }, { 100, 124.3000 } }; 
         }
 
         /// <summary>
@@ -29,13 +27,13 @@ namespace TP3_VariablesAleatorias.PruebasBondad
         /// ,   string  Cadena descriptiva del resultado
         /// >
         /// </returns>
-        public Tuple<bool, double, double, string> realizarPrueba()
+        public override Tuple<bool, double, double, string> realizarPrueba()
         {
             agruparIntervalos();
             calcularColumnasChi();
             calcularChi();
 
-            return Tuple.Create(chiCalculado < chiTabulado, chiCalculado, chiTabulado, generarCadenaResultado());            
+            return Tuple.Create(noSeRechaza(), chiCalculado, chiTabulado, generarCadenaResultado());
         }
 
         private void agruparIntervalos()
@@ -114,6 +112,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
         /// </returns>
         public Tuple<string, double, double, double, double> obtenerFila(int indiceFila)
         {
+            if (indiceFila < 0 || indiceFila > this.intervalosHasta.Length - 1) return Tuple.Create("-", -1.0, -1.0, -1.0, -1.0);
             string columnaIntervalos = intervalosDesde[indiceFila].ToString();
             if(distribucion.esPoisson())
             { 
@@ -128,6 +127,8 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             return Tuple.Create(columnaIntervalos, frecuenciasObservadas[indiceFila], frecuenciasEsperadas[indiceFila], columnaChis[indiceFila], chisAcumulado[indiceFila]);
         }
 
+        public override bool esChiCuadrado() { return true; }
+
         private void calcularChi()
         {
             chiCalculado = chisAcumulado[chisAcumulado.Length - 1]; // La última celda del acumulado tiene el total
@@ -135,14 +136,9 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             chiTabulado = tabla[gradosLibertad];
         }
 
-        private string generarCadenaResultado()
+        protected override bool noSeRechaza()
         {
-            string resultado = "SE RECHAZA LA HIPÓTESIS";
-            if (chiCalculado >= chiTabulado)
-            {
-                return "NO " + resultado;
-            }
-            return resultado;
+            return chiCalculado < chiTabulado;
         }
     }
 }

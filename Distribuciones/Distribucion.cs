@@ -36,5 +36,11 @@ namespace TP3_VariablesAleatorias.Distribuciones
 
         //La necesitamos si o si, porque la tabla es diferente (una columna [x;y;...] en lugar de Desde y Hasta)
         public abstract bool esPoisson();
+
+        public abstract int getNMuestras();
+
+        // Necesitamos esta columan para el k-s, es distinto en cada distribución
+        public abstract double[] getProbabilidadEsperada();
+        
     }
 }

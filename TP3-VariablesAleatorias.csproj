@@ -53,6 +53,7 @@
     <Compile Include="Distribuciones\NormalConvolucion.cs" />
     <Compile Include="Distribuciones\Poisson.cs" />
     <Compile Include="PruebasBondad\ChiCuadrado.cs" />
+    <Compile Include="PruebasBondad\KolmogorovSmirnov.cs" />
     <Compile Include="PruebasBondad\PruebaBondad.cs" />
     <Compile Include="Distribuciones\Uniforme.cs" />
     <Compile Include="Form1.cs">
