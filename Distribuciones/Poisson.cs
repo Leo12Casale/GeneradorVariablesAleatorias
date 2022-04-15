@@ -9,8 +9,33 @@ namespace TP3_VariablesAleatorias.Distribuciones
     public class Poisson : Distribucion
     {
         private double media;
+
+
+        private int[] valoresMuestra;
+
+        public Poisson(double media)
+        {
+            this.media = media;
+
+            //Creamos un vector temp y le asignamos el array serieGenerada casteado en int. 
+            //No se puede cambiar del metodo, no se permite el override
+
+            var temp = Array.ConvertAll(serieGenerada, item => (int)item);
+            valoresMuestra =
+            //Agrupo..
+            temp.GroupBy(x => x)
+            //En caso de que el grupo tenga sólo 1 elemento
+            .Where(x => x.Count() == 1)
+            //Selecciono su Key (el entero)
+            .Select(x => x.Key)
+            //Convierto a Array.
+            .ToArray();
+            valoresMuestra = temp;
+        }
+
+        
         public override double[] generarSerie(int cantidadNumerosAGenerar) {
-            this.SerieGenerada = new double[cantidadNumerosAGenerar];
+            serieGenerada = new double[cantidadNumerosAGenerar];
             Random rndPoisson = new Random();
 
             for (int i = 0; i < cantidadNumerosAGenerar; i++)
@@ -36,6 +61,10 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public override bool esPoisson(){
             return true;
         }
+        public override int getCantDatosEmpiricos()
+        {
+            return 1;
+        }
 
         public override double[] getIntervalosDesde()
         {
@@ -52,24 +81,43 @@ namespace TP3_VariablesAleatorias.Distribuciones
             throw new NotImplementedException();
         }
 
-        public override double[] getFrecuenciasObservadas()
+        public int[] getFrecuenciasEsperadasPoisson()
         {
-            throw new NotImplementedException();
+            int[] frecuenciasEsperadasPoisson = new int[valoresMuestra.Length];
+            for (int i = 0; i < valoresMuestra.Length; i++)
+            {
+                frecuenciasEsperadasPoisson[i] = (int) Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
+            }
+            return frecuenciasEsperadasPoisson;
         }
 
-        public override int getCantDatosEmpiricos()
+        public override int[] getFrecuenciasObservadas()
         {
-            return 1;
+            frecuenciasObservadas = new int[valoresMuestra.Length];
+            for (int i = 0; i < serieGenerada.Length ; i++)
+            {
+                frecuenciasObservadas[(int)serieGenerada[i]] += 1; 
+            }
+            return frecuenciasObservadas;
         }
 
-        public override int getNMuestras()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public override double[] getProbabilidadEsperada()
         {
-            throw new NotImplementedException();
+            probabilidadesEsperadas = new double[valoresMuestra.Length];
+            for (int i = 0; i < valoresMuestra.Length ; i++)
+            {
+                probabilidadesEsperadas[i] = (Math.Pow(media, valoresMuestra[i])*Math.Pow(Math.E, -media)) / (factorial(valoresMuestra[i]));
+            }
+            return probabilidadesEsperadas;
+        }
+
+        private int factorial(int input)
+        {
+            int result = 1;
+            for (int i = input; i > 0; i--)
+                result *= i;
+            return result;
         }
     }
 }

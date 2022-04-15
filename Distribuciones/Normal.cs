@@ -12,8 +12,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
         protected double desviacionEstandar;
         
         public Normal(double media, double desviacionEstandar){
-            this.Media = media;
-            this.DesviacionEstandar = desviacionEstandar;
+            this.media = media;
+            this.desviacionEstandar = desviacionEstandar;
         }
 
         public double Media { get => media; set => media = value; }
@@ -24,6 +24,18 @@ namespace TP3_VariablesAleatorias.Distribuciones
         //esperada
         public override int getCantDatosEmpiricos(){
             return 2;
+        }
+
+        public override double[] getProbabilidadEsperada()
+        {
+            probabilidadesEsperadas = new double[cantidadIntervalos];
+            double marcaClase = 0;
+            for (int i = 0; i < probabilidadesEsperadas.Length; i++)
+            {
+                marcaClase = (intervalosHasta[i] - intervalosDesde[i]) / 2;
+                probabilidadesEsperadas[i] = (Math.Pow(Math.E, (-0.5*Math.Pow((marcaClase-media)/desviacionEstandar, 2)))) / (desviacionEstandar * Math.Sqrt(2*Math.PI));
+            }
+            return probabilidadesEsperadas;
         }
     }
 }

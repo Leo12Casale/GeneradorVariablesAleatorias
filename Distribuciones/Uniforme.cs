@@ -46,57 +46,9 @@ namespace TP3_VariablesAleatorias.Distribuciones
         }
 
 
-        public override double[] getFrecuenciasEsperadas()
-        {
-            frecuenciasEsperadas = new double[cantidadIntervalos];
-            for (int i = 0; i < serieGenerada.Length; i++)
-            {
-                frecuenciasEsperadas[i] = TamañoMuestra / cantidadIntervalos; 
-            }
-            return frecuenciasEsperadas;               
-        }
-
-        public override int[] getFrecuenciasObservadas()
-        {
-            frecuenciasObservadas = new int[cantidadIntervalos];
-            double tamañoIntervalo = 1 / (double)cantidadIntervalos;
-            for (int i = 0; i < serieGenerada.Length; i++)
-            {
-
-                frecuenciasObservadas[(int)Math.Floor(serieGenerada[i] / tamañoIntervalo)] += 1;
-            }
-            return frecuenciasObservadas;
-        }
-
-        public override double[] getIntervalosDesde()
-        {
-            double[] intervalosDesde = new double[cantidadIntervalos];
-            double acumulador = 0;
-            double tamañoIntervalo = 1 / (double)cantidadIntervalos;
-            for (int i = 0; i < intervalosDesde.Length; i++)
-            {
-                intervalosDesde[i] = acumulador;
-                acumulador += tamañoIntervalo;
-            }
-            return intervalosDesde;
-        }
-
-        public override double[] getIntervalosHasta()
-        {
-            double[] intervalosHasta = new double[cantidadIntervalos];
-            double acumulador = tamañoMuestra;
-            double tamañoIntervalo = 1 / (double)cantidadIntervalos;
-            for (int i = 0; i < intervalosHasta.Length; i++)
-            {
-                intervalosHasta[i] = acumulador;
-                acumulador += tamañoIntervalo;
-            }
-            return intervalosHasta;
-        }
-
         public override double[] getProbabilidadEsperada()
         {
-            double [] probabilidadesEsperadas = new double[cantidadIntervalos];
+            probabilidadesEsperadas = new double[cantidadIntervalos];
             for (int i = 0; i < probabilidadesEsperadas.Length; i++)
             {
                 probabilidadesEsperadas[i] = frecuenciasEsperadas[i] / tamañoMuestra;
