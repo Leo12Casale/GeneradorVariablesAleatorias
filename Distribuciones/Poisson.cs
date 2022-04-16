@@ -68,22 +68,17 @@ namespace TP3_VariablesAleatorias.Distribuciones
 
         public override double[] getIntervalosDesde()
         {
-            throw new NotImplementedException();
+            return Array.ConvertAll(valoresMuestra, item => (double)item);
         }
 
         public override double[] getIntervalosHasta()
         {
-            throw new NotImplementedException();
+            return Array.ConvertAll(valoresMuestra, item => (double)item);
         }
 
         public override double[] getFrecuenciasEsperadas()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int[] getFrecuenciasEsperadasPoisson()
-        {
-            int[] frecuenciasEsperadasPoisson = new int[valoresMuestra.Length];
+        { 
+            double[] frecuenciasEsperadasPoisson = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
             {
                 frecuenciasEsperadasPoisson[i] = (int) Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);

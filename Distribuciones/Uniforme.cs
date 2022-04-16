@@ -49,9 +49,10 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public override double[] getProbabilidadEsperada()
         {
             probabilidadesEsperadas = new double[cantidadIntervalos];
+            
             for (int i = 0; i < probabilidadesEsperadas.Length; i++)
             {
-                probabilidadesEsperadas[i] = frecuenciasEsperadas[i] / tamañoMuestra;
+                probabilidadesEsperadas[i] = (B - A) / cantidadIntervalos;
             }
             return probabilidadesEsperadas;
         }
