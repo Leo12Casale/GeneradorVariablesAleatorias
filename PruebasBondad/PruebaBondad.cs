@@ -9,7 +9,9 @@ namespace TP3_VariablesAleatorias.Distribuciones
     public abstract class PruebaBondad {
         protected Distribucion distribucion;
         protected Dictionary<double, double> tabla;
-        protected double[] intervalosDesde, intervalosHasta, frecuenciasObservadas, frecuenciasEsperadas;
+        protected double[] intervalosDesde, intervalosHasta, frecuenciasEsperadas;
+        protected int[] frecuenciasObservadas;
+
 
         public PruebaBondad(Distribucion distribucion)
         { 

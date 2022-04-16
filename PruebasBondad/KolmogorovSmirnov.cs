@@ -93,7 +93,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
 
         private void calcularColumnasRestantes()
         {
-            N = distribucion.getNMuestras();
+            N = distribucion.TamañoMuestra;
 
             pO[0] = frecuenciasObservadas[0] / N;
             acPE[0] = pE[0];

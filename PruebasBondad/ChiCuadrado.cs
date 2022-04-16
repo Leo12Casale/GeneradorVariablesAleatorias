@@ -43,7 +43,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
              */
             double[] intervalosDesde = distribucion.getIntervalosDesde();
             double[] intervalosHasta = distribucion.getIntervalosHasta();
-            double[] frecuenciasObservadas = distribucion.getFrecuenciasObservadas();
+            int[] frecuenciasObservadas = distribucion.getFrecuenciasObservadas();
             double[] frecuenciasEsperadas = distribucion.getFrecuenciasEsperadas();
 
             /*Inicializamos nuevamente los intervalos propios de cada columna de 
@@ -53,7 +53,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
              */
             this.intervalosDesde = new double[intervalosDesde.Length];
             this.intervalosHasta = new double[intervalosDesde.Length];
-            this.frecuenciasObservadas = new double[intervalosDesde.Length];
+            this.frecuenciasObservadas = new int[intervalosDesde.Length];
             this.frecuenciasEsperadas = new double[intervalosDesde.Length];
 
             int j = 0; // Fila actual de la tabla derecha
@@ -84,7 +84,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             Array.Resize<double>(ref this.intervalosDesde, j);
             Array.Resize<double>(ref this.intervalosHasta, j);
             Array.Resize<double>(ref this.frecuenciasEsperadas, j);
-            Array.Resize<double>(ref this.frecuenciasObservadas, j);
+            Array.Resize<int>(ref this.frecuenciasObservadas, j);
         }
 
         private void calcularColumnasChi()
