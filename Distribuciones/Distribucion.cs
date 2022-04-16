@@ -34,7 +34,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         protected double[] SerieGenerada { get => serieGenerada; }
 
         protected int CantidadIntervalos { get => cantidadIntervalos; set => cantidadIntervalos = value; }
-        protected int TamañoMuestra { get => tamañoMuestra; set => tamañoMuestra = value; }
+        public int TamañoMuestra { get => tamañoMuestra; set => tamañoMuestra = value; }
 
         protected double[] generarRNDs(int cantidadRNDsNecesarios)
         {
@@ -86,7 +86,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public virtual double[] getFrecuenciasEsperadas()
         {
             frecuenciasEsperadas = new double[cantidadIntervalos];
-            for (int i = 0; i < serieGenerada.Length; i++)
+            for (int i = 0; i < cantidadIntervalos; i++)
             {
                 frecuenciasEsperadas[i] = probabilidadesEsperadas[i] * tamañoMuestra;
             }
