@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP3_VariablesAleatorias.Presentaciones;
 
 namespace TP3_VariablesAleatorias
 {
@@ -16,7 +17,7 @@ namespace TP3_VariablesAleatorias
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new frm_principal());
         }
     }
 }
