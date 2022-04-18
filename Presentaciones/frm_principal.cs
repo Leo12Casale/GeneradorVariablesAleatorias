@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using TP3_VariablesAleatorias.Distribuciones;
+using TP3_VariablesAleatorias.PruebasBondad;
 
 namespace TP3_VariablesAleatorias.Presentaciones
 {
     public partial class frm_principal : Form
     {
+        private Distribucion distribucion;
+        private PruebaBondad pruebasBondad;
         public frm_principal()
         {  
             InitializeComponent(); 
@@ -20,7 +24,7 @@ namespace TP3_VariablesAleatorias.Presentaciones
             lblValores.Enabled = false;
             nudValores.Enabled = false;
             lblIntervalos.Enabled = false;
-            cbIntervalos.Enabled = false;
+            cboIntervalos.Enabled = false;
             lblIntervalo.Enabled = false;
             lblA.Enabled = false;
             nudA.Enabled = false;
@@ -45,7 +49,7 @@ namespace TP3_VariablesAleatorias.Presentaciones
             lblValores.Enabled = true;
             nudValores.Enabled = true;
             lblIntervalos.Enabled = true;
-            cbIntervalos.Enabled = true;
+            cboIntervalos.Enabled = true;
 
             if (cboDistribucion.SelectedIndex == 0)
             {
@@ -55,19 +59,19 @@ namespace TP3_VariablesAleatorias.Presentaciones
                 lblB.Enabled = true;
                 nudB.Enabled = true;
             }
-            if (cboDistribucion.SelectedIndex == 1)
+            else if (cboDistribucion.SelectedIndex == 1)
             {
                 lblMedia.Enabled = true;
                 nudMedia.Enabled = true;
             }
-            if (cboDistribucion.SelectedIndex == 2)
+            else if (cboDistribucion.SelectedIndex == 2 || cboDistribucion.SelectedIndex == 3)
             {
                 lblMedia.Enabled = true;
                 nudMedia.Enabled = true;
                 lblDesviacion.Enabled = true;
                 nudDesviacion.Enabled = true;
             }
-            if (cboDistribucion.SelectedIndex == 3)
+            else if (cboDistribucion.SelectedIndex == 4)
             {
                 lblLambda.Enabled = true;
                 nudLambda.Enabled = true;
@@ -88,26 +92,39 @@ namespace TP3_VariablesAleatorias.Presentaciones
         private void btnGenerar_Click(object sender, EventArgs e)
         {
             disableParameters();
-            DataTable tabla = crearTabla();
-            dgvTabla.DataSource = tabla;
+
+            distribucion = obtenerDistribucion();
+            distribucion.generarSerie((int)nudValores.Value);
+            dgvTabla.DataSource = distribucion.generarTabla();
             grafico.Show();
         }
 
-        private DataTable crearTabla()
+        private int getIntervalos()
         {
-            DataTable tabla = new DataTable();
-            tabla.Columns.Add("Intervalo");
-            tabla.Columns.Add("Marca de Clase");
-            tabla.Columns.Add("fo");
-            tabla.Columns.Add("P() c / mc");
-            tabla.Columns.Add("P() c/Pac");
-            tabla.Columns.Add("fe");
-
-            tabla.Rows.Add(1, 1, 1, 1, 1, 1);
-            tabla.Rows.Add(1, 1, 1, 1, 1, 1);
-            
-            return tabla;
+            switch (cboIntervalos.SelectedIndex)
+            {
+                case 0: return 8;
+                case 1: return 10;
+                case 2: return 15;
+                case 3: return 20;
+                default: return 8;
+            }
         }
+
+        private Distribucion obtenerDistribucion()
+        {
+            if (cboDistribucion.SelectedIndex == 0)
+                return new Uniforme((double)nudA.Value, (double)nudB.Value, getIntervalos());
+            if (cboDistribucion.SelectedIndex == 1) 
+                return new Exponencial((double)nudMedia.Value);
+            if (cboDistribucion.SelectedIndex == 2)
+                return new NormalBoxMuller((double)nudMedia.Value, (double)nudDesviacion.Value);
+            if (cboDistribucion.SelectedIndex == 3) 
+                return new NormalConvolucion((double) nudMedia.Value, (double) nudDesviacion.Value);
+            if (cboDistribucion.SelectedIndex == 4)
+                return new Poisson((double)nudLambda.Value);
+            return null;
+        } 
 
         private void btnRestablecer_Click(object sender, EventArgs e)
         {

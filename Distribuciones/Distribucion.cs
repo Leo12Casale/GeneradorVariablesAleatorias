@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,72 +58,96 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public abstract double[] generarSerie(int cantidadNumerosAGenerar);
 
         //Poisson no tiene desde y hasta, pero que el desde y el hasta retornen el mismo numero. Ej: => [7;7]
-        public  virtual double[] getIntervalosDesde()
+        public  virtual void calcularIntervalosDesde()
         {
-            double[] intervalosDesde = new double[cantidadIntervalos];
+            intervalosDesde = new double[cantidadIntervalos];
             double acumulador = 0;
-            double tamañoIntervalo = 1 / (double)cantidadIntervalos;
+            double tamañoIntervalo = (serieGenerada.Max()  - serieGenerada.Min()) / (double)cantidadIntervalos;
             for (int i = 0; i < intervalosDesde.Length; i++)
             {
                 intervalosDesde[i] = acumulador;
                 acumulador += tamañoIntervalo;
-            }
+            } 
+        }
+
+        public double[] getIntervalosDesde()
+        {
             return intervalosDesde;
         }
-        public virtual double[] getIntervalosHasta()
+
+        public virtual void calcularIntervalosHasta()
         {
-            double[] intervalosHasta = new double[cantidadIntervalos];
-            double acumulador = tamañoMuestra;
-            double tamañoIntervalo = 1 / (double)cantidadIntervalos;
+            intervalosHasta = new double[cantidadIntervalos];
+            double tamañoIntervalo = (serieGenerada.Max() - serieGenerada.Min()) / (double)cantidadIntervalos;
+            double acumulador = tamañoIntervalo;
             for (int i = 0; i < intervalosHasta.Length; i++)
             {
                 intervalosHasta[i] = acumulador;
                 acumulador += tamañoIntervalo;
-            }
+            } 
+        }
+
+        public double[] getIntervalosHasta()
+        {
             return intervalosHasta;
         }
 
         // Especializado para cada distribución con el uso de la probabilidad que corresponda
-        public virtual double[] getFrecuenciasEsperadas()
+        public virtual void calcularFrecuenciasEsperadas()
         {
             frecuenciasEsperadas = new double[cantidadIntervalos];
             for (int i = 0; i < cantidadIntervalos; i++)
             {
                 frecuenciasEsperadas[i] = probabilidadesEsperadas[i] * tamañoMuestra;
             }
-            return frecuenciasEsperadas;
+        }
+
+        public virtual double[] getFrecuenciasEsperadas()
+        {
+            return frecuenciasEsperadas; 
         }
 
         // Necesitamos esta columan para el k-s, es distinto en cada distribución
-        public abstract double[] getProbabilidadEsperada();
+        public virtual double[] getProbabilidadEsperada()
+        {
+            return probabilidadesEsperadas;
+        }
+        public abstract void calcularProbabilidadEsperada();
+
+        public virtual void calcularFrecuenciasObservadas()
+        {
+            frecuenciasObservadas = new int[cantidadIntervalos];
+            double tamañoIntervalo = (serieGenerada.Max()*1.000001 - serieGenerada.Min()) / (double)cantidadIntervalos;
+            for (int i = 0; i < serieGenerada.Length; i++)
+            {
+                int indice = (int)Math.Floor(serieGenerada[i] / tamañoIntervalo);
+                frecuenciasObservadas[indice] += 1;
+            }
+        }
 
         public virtual int[] getFrecuenciasObservadas()
         {
-            frecuenciasObservadas = new int[cantidadIntervalos];
-            double tamañoIntervalo = 1 / (double)cantidadIntervalos;
-            for (int i = 0; i < serieGenerada.Length; i++)
-            {
-
-                frecuenciasObservadas[(int)Math.Floor(serieGenerada[i] / tamañoIntervalo)] += 1;
-            }
             return frecuenciasObservadas;
         }
 
-        public double[] getProbabilidadObservada()
+        public void calcularProbabilidadObservada()
         {
             probabilidadesObservadas = new double[cantidadIntervalos]; 
             for (int i = 0; i < cantidadIntervalos ; i++)
             {
                 probabilidadesObservadas[i] = frecuenciasObservadas[i] / tamañoMuestra;
             }
+        }
+
+        public double[] getProbabilidadObservada()
+        {
             return probabilidadesObservadas;
         }
 
         // Getter de la variable con la cantidad de datos empíricos de cada distribución
         public abstract int getCantDatosEmpiricos();
 
-        
-
-
+        public abstract string[] getColumnas();
+        public abstract DataTable generarTabla();
     }
 }

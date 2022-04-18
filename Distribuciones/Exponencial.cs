@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,19 +29,31 @@ namespace TP3_VariablesAleatorias.Distribuciones
             return serieGenerada;
         }
 
+        public override DataTable generarTabla()
+        {
+            throw new NotImplementedException();
+        }
+
         public override int getCantDatosEmpiricos()
         {
             return 1;
         }
 
-        public override double[] getProbabilidadEsperada()
+        public override string[] getColumnas()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void calcularProbabilidadEsperada()
         {
             probabilidadesEsperadas = new double[cantidadIntervalos];
             for (int i = 0; i < probabilidadesEsperadas.Length; i++)
             {
                 probabilidadesEsperadas[i] = (1 - Math.Pow(Math.E,((-1/media) * intervalosHasta[i]))) - (1 - Math.Pow(Math.E, ((-1 / media) * intervalosDesde[i])));
-            }
-            return probabilidadesEsperadas;
+            } 
+        }
+        public (string, string, string, string) obtenerFila(int indice) {
+            return ("", "", "", "");
         }
     }
 }

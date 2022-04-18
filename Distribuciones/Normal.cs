@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
             return 2;
         }
 
-        public override double[] getProbabilidadEsperada()
+        public override void calcularProbabilidadEsperada()
         {
             probabilidadesEsperadas = new double[cantidadIntervalos];
             double marcaClase = 0;
@@ -34,8 +35,21 @@ namespace TP3_VariablesAleatorias.Distribuciones
             {
                 marcaClase = (intervalosHasta[i] - intervalosDesde[i]) / 2;
                 probabilidadesEsperadas[i] = (Math.Pow(Math.E, (-0.5*Math.Pow((marcaClase-media)/desviacionEstandar, 2)))) / (desviacionEstandar * Math.Sqrt(2*Math.PI));
-            }
-            return probabilidadesEsperadas;
+            } 
+        }
+        public (string, string, string, string) obtenerFila(int indice)
+        {
+            return ("", "", "", "");
+        }
+
+        public override string[] getColumnas()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DataTable generarTabla()
+        {
+            throw new NotImplementedException();
         }
     }
 }

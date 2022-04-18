@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,45 +67,42 @@ namespace TP3_VariablesAleatorias.Distribuciones
             return 1;
         }
 
-        public override double[] getIntervalosDesde()
+        public override void calcularIntervalosDesde()
         {
-            return Array.ConvertAll(valoresMuestra, item => (double)item);
+            intervalosDesde = Array.ConvertAll(valoresMuestra, item => (double)item);
         }
 
-        public override double[] getIntervalosHasta()
+        public override void calcularIntervalosHasta()
         {
-            return Array.ConvertAll(valoresMuestra, item => (double)item);
+            intervalosHasta = Array.ConvertAll(valoresMuestra, item => (double)item);
         }
 
-        public override double[] getFrecuenciasEsperadas()
+        public override void calcularFrecuenciasEsperadas()
         { 
             double[] frecuenciasEsperadasPoisson = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
             {
                 frecuenciasEsperadasPoisson[i] = (int) Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
-            }
-            return frecuenciasEsperadasPoisson;
+            } 
         }
 
-        public override int[] getFrecuenciasObservadas()
+        public override void calcularFrecuenciasObservadas()
         {
             frecuenciasObservadas = new int[valoresMuestra.Length];
             for (int i = 0; i < serieGenerada.Length ; i++)
             {
                 frecuenciasObservadas[(int)serieGenerada[i]] += 1; 
-            }
-            return frecuenciasObservadas;
+            } 
         }
 
         
-        public override double[] getProbabilidadEsperada()
+        public override void calcularProbabilidadEsperada()
         {
             probabilidadesEsperadas = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length ; i++)
             {
                 probabilidadesEsperadas[i] = (Math.Pow(media, valoresMuestra[i])*Math.Pow(Math.E, -media)) / (factorial(valoresMuestra[i]));
-            }
-            return probabilidadesEsperadas;
+            } 
         }
 
         private int factorial(int input)
@@ -113,6 +111,20 @@ namespace TP3_VariablesAleatorias.Distribuciones
             for (int i = input; i > 0; i--)
                 result *= i;
             return result;
+        }
+        public (string, string, string, string) obtenerFila(int indice)
+        {
+            return ("", "", "", "");
+        }
+
+        public override string[] getColumnas()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DataTable generarTabla()
+        {
+            throw new NotImplementedException();
         }
     }
 }

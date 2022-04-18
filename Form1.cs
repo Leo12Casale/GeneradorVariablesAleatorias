@@ -20,18 +20,7 @@ namespace TP3_VariablesAleatorias
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            Uniforme uni = new Uniforme(0, 1);
-            uni.generarSerie(30);
-            uni.getFrecuenciasObservadas();
-            uni.getProbabilidadObservada();
-            uni.getProbabilidadEsperada();
-            uni.getFrecuenciasEsperadas();
-            ChiCuadrado chi = new ChiCuadrado(uni);
-
-            var (resB, chiC, chiT, cadena) = chi.realizarPrueba();
-
-            Console.WriteLine(resB.ToString(), chiC, chiT, cadena);
+        { 
         }
     }
 }
