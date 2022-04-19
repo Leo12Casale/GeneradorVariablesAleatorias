@@ -11,7 +11,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
     {
         protected double media;
         protected double desviacionEstandar;
-        
+        double[] marcaClase;
+
         public Normal(double media, double desviacionEstandar, int intervalo){
             this.media = media;
             this.desviacionEstandar = desviacionEstandar;
@@ -31,26 +32,39 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public override void calcularProbabilidadEsperada()
         {
             probabilidadesEsperadas = new double[cantidadIntervalos];
-            double marcaClase = 0;
+            marcaClase = new double[cantidadIntervalos];
             for (int i = 0; i < probabilidadesEsperadas.Length; i++)
             {
-                marcaClase = (intervalosHasta[i] - intervalosDesde[i]) / 2;
-                probabilidadesEsperadas[i] = (Math.Pow(Math.E, (-0.5*Math.Pow((marcaClase-media)/desviacionEstandar, 2)))) / (desviacionEstandar * Math.Sqrt(2*Math.PI));
+                marcaClase[i] = (intervalosHasta[i] + intervalosDesde[i]) / 2;
+                probabilidadesEsperadas[i] = (Math.Pow(Math.E, (-0.5*Math.Pow((marcaClase[i]-media)/desviacionEstandar, 2)))) / (desviacionEstandar * Math.Sqrt(2*Math.PI));
             } 
         }
-        public (string, string, string, string) obtenerFila(int indice)
+        public (string, string, string, string, string, string) obtenerFila(int indice)
         {
-            return ("", "", "", "");
+            return (intervalosDesde[indice].ToString(), intervalosHasta[indice].ToString(), marcaClase[indice].ToString(), frecuenciasObservadas[indice].ToString(), probabilidadesEsperadas[indice].ToString(), frecuenciasEsperadas[indice].ToString());
         }
 
         public override string[] getColumnas()
         {
-            throw new NotImplementedException();
+            return new String[] { "Desde", "Hasta", "MC", "FO", "PE", "FE" };
         }
 
         public override DataTable generarTabla()
         {
-            throw new NotImplementedException();
+            DataTable tabla = new DataTable();
+            // cabecera 
+            string[] columnasTXT = this.getColumnas();
+            for (int i = 0; i < columnasTXT.Length; i++)
+                tabla.Columns.Add(columnasTXT[i]);
+
+            // filas
+            for (int i = 0; i < this.cantidadIntervalos; i++)
+            {
+                var (desde, hasta,mc, fo, pe, fe) = this.obtenerFila(i);
+                tabla.Rows.Add(desde, hasta,mc, fo, pe, fe);
+            }
+
+            return tabla;
         }
     }
 }

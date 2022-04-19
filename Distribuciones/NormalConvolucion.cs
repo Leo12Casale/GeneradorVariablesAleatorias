@@ -12,6 +12,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
 
         public override double[] generarSerie(int cantidadNumerosAGenerar)
         {
+            tamañoMuestra = cantidadNumerosAGenerar;
             //Variable que acumula los 12 randoms para generar un numero aleatorio
             double sumatoriaRND;
             //Variable que chequea que se utilicen 12 randoms por numero aleatorio
@@ -35,6 +36,14 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 }
                 serieGenerada[i] = (sumatoriaRND - 6) * this.desviacionEstandar + this.media;
             }
+
+            calcularIntervalosDesde();
+            calcularIntervalosHasta();
+            calcularFrecuenciasObservadas();
+            calcularProbabilidadObservada();
+            calcularProbabilidadEsperada();
+            calcularFrecuenciasEsperadas();
+
             return serieGenerada;
         }   
     }
