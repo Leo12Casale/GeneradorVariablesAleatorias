@@ -8,7 +8,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
 {
     public class NormalBoxMuller : Normal
     {
-        public NormalBoxMuller(double media, double desviacionEstandar) : base(media, desviacionEstandar) { }
+        public NormalBoxMuller(double media, double desviacionEstandar, int intervalo) : base(media, desviacionEstandar, intervalo) { }
         
         
         public override double[] generarSerie(int cantidadNumerosAGenerar)

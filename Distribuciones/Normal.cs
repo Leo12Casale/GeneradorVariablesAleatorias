@@ -12,9 +12,10 @@ namespace TP3_VariablesAleatorias.Distribuciones
         protected double media;
         protected double desviacionEstandar;
         
-        public Normal(double media, double desviacionEstandar){
+        public Normal(double media, double desviacionEstandar, int intervalo){
             this.media = media;
             this.desviacionEstandar = desviacionEstandar;
+            cantidadIntervalos = intervalo;
         }
 
         public double Media { get => media; set => media = value; }

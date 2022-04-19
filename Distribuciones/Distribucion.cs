@@ -61,7 +61,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public  virtual void calcularIntervalosDesde()
         {
             intervalosDesde = new double[cantidadIntervalos];
-            double acumulador = 0;
+            double acumulador = serieGenerada.Min();
             double tamañoIntervalo = (serieGenerada.Max()  - serieGenerada.Min()) / (double)cantidadIntervalos;
             for (int i = 0; i < intervalosDesde.Length; i++)
             {
@@ -79,7 +79,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         {
             intervalosHasta = new double[cantidadIntervalos];
             double tamañoIntervalo = (serieGenerada.Max() - serieGenerada.Min()) / (double)cantidadIntervalos;
-            double acumulador = tamañoIntervalo;
+            double acumulador = serieGenerada.Min() +  tamañoIntervalo;
             for (int i = 0; i < intervalosHasta.Length; i++)
             {
                 intervalosHasta[i] = acumulador;
@@ -117,13 +117,25 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public virtual void calcularFrecuenciasObservadas()
         {
             frecuenciasObservadas = new int[cantidadIntervalos];
-            double tamañoIntervalo = (serieGenerada.Max()*1.000001 - serieGenerada.Min()) / (double)cantidadIntervalos;
+            //double tamañoIntervalo = (serieGenerada.Max()*1.0001 - serieGenerada.Min()) / (double)cantidadIntervalos;
             for (int i = 0; i < serieGenerada.Length; i++)
             {
-                int indice = (int)Math.Floor(serieGenerada[i] / tamañoIntervalo);
-                frecuenciasObservadas[indice] += 1;
+                int contadorIntervalos = 0;
+                if (serieGenerada[i] > intervalosHasta[cantidadIntervalos - 1]) {
+                    frecuenciasObservadas[cantidadIntervalos - 1] += 1;
+                    continue;
+                }
+
+                while (serieGenerada[i] > intervalosHasta[contadorIntervalos])
+                {
+                    contadorIntervalos++;
+                }
+                frecuenciasObservadas[contadorIntervalos] += 1;
+                }
+                //int indice = (int)Math.Floor(serieGenerada[i] / tamañoIntervalo);
+                //frecuenciasObservadas[indice] += 1;
             }
-        }
+        
 
         public virtual int[] getFrecuenciasObservadas()
         {

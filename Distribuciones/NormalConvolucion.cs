@@ -8,7 +8,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
 {
     public class NormalConvolucion : Normal
     {
-        public NormalConvolucion(double media, double desviacionEstandar) : base(media, desviacionEstandar) { }
+        public NormalConvolucion(double media, double desviacionEstandar, int intervalo) : base(media, desviacionEstandar, intervalo) { }
 
         public override double[] generarSerie(int cantidadNumerosAGenerar)
         {

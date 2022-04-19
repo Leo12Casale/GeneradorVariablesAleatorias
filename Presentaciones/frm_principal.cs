@@ -116,11 +116,11 @@ namespace TP3_VariablesAleatorias.Presentaciones
             if (cboDistribucion.SelectedIndex == 0)
                 return new Uniforme((double)nudA.Value, (double)nudB.Value, getIntervalos());
             if (cboDistribucion.SelectedIndex == 1) 
-                return new Exponencial((double)nudMedia.Value);
+                return new Exponencial((double)nudMedia.Value, getIntervalos());
             if (cboDistribucion.SelectedIndex == 2)
-                return new NormalBoxMuller((double)nudMedia.Value, (double)nudDesviacion.Value);
+                return new NormalBoxMuller((double)nudMedia.Value, (double)nudDesviacion.Value, getIntervalos());
             if (cboDistribucion.SelectedIndex == 3) 
-                return new NormalConvolucion((double) nudMedia.Value, (double) nudDesviacion.Value);
+                return new NormalConvolucion((double) nudMedia.Value, (double) nudDesviacion.Value, getIntervalos());
             if (cboDistribucion.SelectedIndex == 4)
                 return new Poisson((double)nudLambda.Value);
             return null;
