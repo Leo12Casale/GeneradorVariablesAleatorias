@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +68,36 @@ namespace TP3_VariablesAleatorias.PruebasBondad
         
         public override bool esChiCuadrado() { return false; }
 
+        private void calcularColumnasRestantes()
+        {
+            N = distribucion.TamañoMuestra;
+            int intervalos = frecuenciasEsperadas.Length;
+            pO = new double[intervalos];
+            acPE = new double[intervalos];
+            acPO = new double[intervalos];
+            absDiffAc = new double[intervalos];
+            columnaMaximos = new double[intervalos]; 
+
+            pO[0] = frecuenciasObservadas[0] / (double) N;
+            acPE[0] = pE[0];
+            acPO[0] = pO[0];
+            absDiffAc[0] = acPO[0] - acPE[0];
+            columnaMaximos[0] = absDiffAc[0];
+            for (int i = 1; i < frecuenciasObservadas.Length; i++)
+            {
+                pO[i] = frecuenciasObservadas[i] / (double)N;
+                acPE[i] = pE[i] + acPE[i - 1];
+                acPO[i] = pO[i] + acPO[i - 1];
+                absDiffAc[i] = Math.Abs(acPO[i] - acPE[i]);
+                columnaMaximos[i] = Math.Max(columnaMaximos[i - 1], absDiffAc[i]);
+            }
+        }
+
+        // Gráfico
+        public override string[] getColumnas()
+        {
+            return new string[] { "Desde", "Hasta", "FO", "FE", "PO", "PE", "PO(Ac)", "PE(Ac)", "|PO[ac]-PE[ac]|", "Max"};
+        }
         /// <summary>
         /// Devuelve una Tupla con todos los valores de una fila que necesita la tabla
         /// </summary>
@@ -91,24 +122,22 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             return (intervalosDesde[indiceFila].ToString(), intervalosHasta[indiceFila].ToString(), frecuenciasObservadas[indiceFila], frecuenciasEsperadas[indiceFila], pO[indiceFila], pE[indiceFila], acPO[indiceFila], acPE[indiceFila], absDiffAc[indiceFila], columnaMaximos[indiceFila]);
         }
 
-        private void calcularColumnasRestantes()
+        public override DataTable generarTabla()
         {
-            N = distribucion.TamañoMuestra;
+            DataTable tabla = new DataTable();
+            // cabecera 
+            string[] columnasTXT = this.getColumnas();
+            for (int i = 0; i < columnasTXT.Length; i++)
+                tabla.Columns.Add(columnasTXT[i]);
 
-            pO[0] = frecuenciasObservadas[0] / N;
-            acPE[0] = pE[0];
-            acPO[0] = pO[0];
-            absDiffAc[0] = acPO[0] - acPE[0];
-            columnaMaximos[0] = absDiffAc[0];
-            for (int i = 1; i < frecuenciasObservadas.Length; i++)
+            // filas
+            for (int i = 0; i < this.intervalosDesde.Length; i++)
             {
-                pO[i] = frecuenciasObservadas[i] / N;
-                acPE[i] = pE[i] + acPE[i - 1];
-                acPO[i] = pO[i] + acPO[i - 1];
-                absDiffAc[i] = acPO[i] - acPE[i];
-                columnaMaximos[i] = Math.Max(columnaMaximos[i - 1], absDiffAc[i]);
-
+                var (desde, hasta, fo, fe, po, pe, poAc, peAc, abs, max) = this.obtenerFila(i);
+                tabla.Rows.Add(desde, hasta, fo, fe, po, pe, poAc, peAc, abs, max);
             }
+
+            return tabla;
         } 
     }
 }

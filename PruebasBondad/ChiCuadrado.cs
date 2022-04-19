@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,43 +42,43 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             /* Obtenemos los valores agrupados de la distribución (independientemente del tipo), 
              * solo las columnas de la tabla izquierda de excel que necesita la prueba de bondad
              */
-            double[] intervalosDesde = distribucion.getIntervalosDesde();
-            double[] intervalosHasta = distribucion.getIntervalosHasta();
-            int[] frecuenciasObservadas = distribucion.getFrecuenciasObservadas();
-            double[] frecuenciasEsperadas = distribucion.getFrecuenciasEsperadas();
+            double[] intDesde = distribucion.getIntervalosDesde();
+            double[] intHasta = distribucion.getIntervalosHasta();
+            int[] fo = distribucion.getFrecuenciasObservadas();
+            double[] fe = distribucion.getFrecuenciasEsperadas();
 
             /*Inicializamos nuevamente los intervalos propios de cada columna de 
              * la tabla chiCuadrado (la derecha en excel). 
              * La cantidad de filas inicialmente son las mismas que las de la distribución,
              * luego este número puede disminuir al agrupar
              */
-            this.intervalosDesde = new double[intervalosDesde.Length];
-            this.intervalosHasta = new double[intervalosDesde.Length];
-            this.frecuenciasObservadas = new int[intervalosDesde.Length];
-            this.frecuenciasEsperadas = new double[intervalosDesde.Length];
+            this.intervalosDesde = new double[intDesde.Length];
+            this.intervalosHasta = new double[intDesde.Length];
+            this.frecuenciasObservadas = new int[intDesde.Length];
+            this.frecuenciasEsperadas = new double[intDesde.Length];
 
             int j = 0; // Fila actual de la tabla derecha
             int indiceInicioIntervalo = 0; // Indice (en la tabla izquierda) de la fila que indica el desde de la fila derecha actual
-            for(int i = 0; i < intervalosDesde.Length; i++)
+            for(int i = 0; i < intDesde.Length; i++)
             {   // Acumulamos las frecuencias
-                this.frecuenciasEsperadas[j] += frecuenciasEsperadas[i]; 
-                this.frecuenciasObservadas[j] += frecuenciasObservadas[i]; 
+                this.frecuenciasEsperadas[j] += fe[i]; 
+                this.frecuenciasObservadas[j] += fo[i]; 
                 if(this.frecuenciasEsperadas[j] >= 5) {
                     // Si la frecuencia esperada alcanzó 5, completamos la fila:
                     // el hasta de la fila (con el hasta, de la fila derecha actual [i])
-                    this.intervalosHasta[j] = intervalosHasta[i];
+                    this.intervalosHasta[j] = intHasta[i];
                     // el desde de la fila (con el desde, de la fila en la que comenzamos a sumar
-                    this.intervalosDesde[j] = intervalosDesde[indiceInicioIntervalo]; 
+                    this.intervalosDesde[j] = intDesde[indiceInicioIntervalo]; 
                     j++; // nos movemos a la fila siguiente en la tabla derecha
                     indiceInicioIntervalo = i + 1; // actualizamos el índice a la fila siguiente (de la tabla derecha)
                 }
             }
             // En caso de que las últimas filas no lleguen a 5 las acumulamos al intervalo anterior
-            if (this.frecuenciasEsperadas[j] < 5)
+            if (j < this.frecuenciasEsperadas.Length && this.frecuenciasEsperadas[j] < 5)
             {
                 this.frecuenciasEsperadas[j - 1] += this.frecuenciasEsperadas[j];
                 this.frecuenciasObservadas[j - 1] += this.frecuenciasObservadas[j];
-                this.intervalosHasta[j - 1] = intervalosHasta[intervalosHasta.Length - 1]; 
+                this.intervalosHasta[j - 1] = intHasta[intervalosHasta.Length - 1]; 
             }
 
             // Reajustamos el número de filas de la columna, luego de la agrupación
@@ -89,12 +90,36 @@ namespace TP3_VariablesAleatorias.PruebasBondad
 
         private void calcularColumnasChi()
         {
+            columnaChis = new double[frecuenciasEsperadas.Length];
+            chisAcumulado = new double[frecuenciasEsperadas.Length];
             columnaChis[0] = Math.Pow(frecuenciasObservadas[0] - frecuenciasEsperadas[0], 2) / frecuenciasEsperadas[0];
+            chisAcumulado[0] = columnaChis[0];
+
             for (int i = 1; i < this.intervalosHasta.Length; i++)
             {
                 columnaChis[i] = Math.Pow(frecuenciasObservadas[i] - frecuenciasEsperadas[i], 2) / frecuenciasEsperadas[i];
                 chisAcumulado[i] = columnaChis[i] + chisAcumulado[i-1];
             }
+        }
+
+        public override bool esChiCuadrado() { return true; }
+
+        private void calcularChi()
+        {
+            chiCalculado = chisAcumulado[chisAcumulado.Length - 1]; // La última celda del acumulado tiene el total
+            int gradosLibertad = chisAcumulado.Length - 1 - distribucion.getCantDatosEmpiricos();
+            chiTabulado = tabla[gradosLibertad];
+        }
+
+        protected override bool noSeRechaza()
+        {
+            return chiCalculado < chiTabulado;
+        }
+
+        // Gráfico
+        public override string[] getColumnas()
+        {
+            return new string[] { "Intervalo", "FO", "FE", "C", "C(Ac)"};
         }
 
         /// <summary>
@@ -113,9 +138,9 @@ namespace TP3_VariablesAleatorias.PruebasBondad
         {
             if (indiceFila < 0 || indiceFila > this.intervalosHasta.Length - 1) return ("-", -1.0, -1.0, -1.0, -1.0);
             string columnaIntervalos = intervalosDesde[indiceFila].ToString();
-            if(distribucion.esPoisson())
-            { 
-                for (double i = intervalosDesde[indiceFila]+1; i <= intervalosHasta[indiceFila] ; i++) 
+            if (distribucion.esPoisson())
+            {
+                for (double i = intervalosDesde[indiceFila] + 1; i <= intervalosHasta[indiceFila]; i++)
                     columnaIntervalos += "; " + i.ToString();
             }
             else
@@ -126,18 +151,23 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             return (columnaIntervalos, frecuenciasObservadas[indiceFila], frecuenciasEsperadas[indiceFila], columnaChis[indiceFila], chisAcumulado[indiceFila]);
         }
 
-        public override bool esChiCuadrado() { return true; }
-
-        private void calcularChi()
+        public override DataTable generarTabla()
         {
-            chiCalculado = chisAcumulado[chisAcumulado.Length - 1]; // La última celda del acumulado tiene el total
-            int gradosLibertad = chisAcumulado.Length - 1 - distribucion.getCantDatosEmpiricos();
-            chiTabulado = tabla[gradosLibertad];
-        }
+            DataTable tabla = new DataTable();
+            // cabecera 
+            string[] columnasTXT = this.getColumnas();
+            for (int i = 0; i < columnasTXT.Length; i++)
+                tabla.Columns.Add(columnasTXT[i]);
 
-        protected override bool noSeRechaza()
-        {
-            return chiCalculado < chiTabulado;
-        }
+            // filas
+            for (int i = 0; i < this.intervalosDesde.Length; i++)
+            {
+                var (intervalo, fo, fe, c, cac) = this.obtenerFila(i);
+                tabla.Rows.Add(intervalo, fo, fe, c, cac);
+            }
+
+            return tabla;
+        } 
+
     }
 }
