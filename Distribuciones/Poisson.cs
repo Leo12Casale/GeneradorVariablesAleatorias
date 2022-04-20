@@ -48,9 +48,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 serieGenerada[i] = x;
             }*/
 
-            var temp = Array.ConvertAll(serieGenerada, item => (int)item);
-            valoresMuestra = temp.Distinct().ToArray();
-            Array.Sort(valoresMuestra); 
+            crearArregloValores();
+
             calcularIntervalosDesde();
             calcularIntervalosHasta();
             calcularFrecuenciasObservadas();
@@ -58,6 +57,19 @@ namespace TP3_VariablesAleatorias.Distribuciones
             calcularFrecuenciasEsperadas();
 
             return serieGenerada;
+        }
+
+        //Crea el vector de valores de muestra sin repetir
+        private void crearArregloValores()
+        {
+            int minimo = (int)serieGenerada.Min();
+            int maximo = (int)serieGenerada.Max();
+            valoresMuestra = new int[(maximo - minimo) + 1];
+            for (int i = 0; i < valoresMuestra.Length; i++)
+            {
+                valoresMuestra[i] = minimo + i;
+            }
+
         }
 
         public override bool esPoisson(){
@@ -83,17 +95,16 @@ namespace TP3_VariablesAleatorias.Distribuciones
             frecuenciasEsperadas = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
             {
-                frecuenciasEsperadas[i] = Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
+                frecuenciasEsperadas[i] = (int) Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
             } 
         }
 
         public override void calcularFrecuenciasObservadas()
         {
-            frecuenciasObservadas = new int[valoresMuestra.Max() - valoresMuestra.Min()];
+            frecuenciasObservadas = new int[valoresMuestra.Length];
             for (int i = 0; i < serieGenerada.Length; i++)
             {
                 int contadorIntervalos = 0;
-
                 while (serieGenerada[i] != valoresMuestra[contadorIntervalos])
                 {
                     contadorIntervalos++;
@@ -101,24 +112,21 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 frecuenciasObservadas[contadorIntervalos] += 1;
             }
         }
-    
-    
-
         
         public override void calcularProbabilidadEsperada()
         {
             probabilidadesEsperadas = new double[valoresMuestra.Length];
-            for (int i = 0; i < valoresMuestra.Length ; i++)
+            for (int i = 0; i < valoresMuestra.Length; i++)
             {
                 probabilidadesEsperadas[i] = (Math.Pow(media, valoresMuestra[i])*Math.Pow(Math.E, -media)) / (factorial(valoresMuestra[i]));
             } 
         }
 
-        private int factorial(int input)
+        private ulong factorial(int input)
         {
-            int result = 1;
-            for (int i = input; i > 0; i--)
-                result *= i;
+            ulong result = 1;
+            for (long i = input; i > 0; i--)
+                result *= (ulong) i;
             return result;
         }
         public (string, string, string, string) obtenerFila(int indice)
