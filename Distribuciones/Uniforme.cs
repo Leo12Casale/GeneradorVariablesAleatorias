@@ -93,6 +93,16 @@ namespace TP3_VariablesAleatorias.Distribuciones
             }
         }
 
+        public override void calcularFrecuenciasEsperadas()
+        {
+            frecuenciasEsperadas = new double[cantidadIntervalos];
+            int frecuenciaEsperadaUniforme =  tamañoMuestra/cantidadIntervalos;
+            for (int i = 0; i < cantidadIntervalos; i++)
+            {
+                frecuenciasEsperadas[i] = frecuenciaEsperadaUniforme;
+                //frecuenciasEsperadas[i] = probabilidadesEsperadas[i] * tamañoMuestra;
+            }
+        }
         public override int getCantDatosEmpiricos()
         {
             return 0;
