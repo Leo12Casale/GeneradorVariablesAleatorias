@@ -117,7 +117,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public virtual void calcularFrecuenciasObservadas()
         {
             frecuenciasObservadas = new int[cantidadIntervalos];
-            //double tamañoIntervalo = (serieGenerada.Max()*1.0001 - serieGenerada.Min()) / (double)cantidadIntervalos;
+           
             for (int i = 0; i < serieGenerada.Length; i++)
             {
                 int contadorIntervalos = 0;
@@ -132,8 +132,6 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 }
                 frecuenciasObservadas[contadorIntervalos] += 1;
                 }
-                //int indice = (int)Math.Floor(serieGenerada[i] / tamañoIntervalo);
-                //frecuenciasObservadas[indice] += 1;
             }
         
 

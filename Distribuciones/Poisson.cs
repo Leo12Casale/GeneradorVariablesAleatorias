@@ -11,7 +11,6 @@ namespace TP3_VariablesAleatorias.Distribuciones
     {
         private double media;
 
-
         private int[] valoresMuestra;
 
         public Poisson(double media)
@@ -21,22 +20,14 @@ namespace TP3_VariablesAleatorias.Distribuciones
             //Creamos un vector temp y le asignamos el array serieGenerada casteado en int. 
             //No se puede cambiar del metodo, no se permite el override
 
-            var temp = Array.ConvertAll(serieGenerada, item => (int)item);
-            valoresMuestra =
-            //Agrupo..
-            temp.GroupBy(x => x)
-            //En caso de que el grupo tenga sólo 1 elemento
-            .Where(x => x.Count() == 1)
-            //Selecciono su Key (el entero)
-            .Select(x => x.Key)
-            //Convierto a Array.
-            .ToArray();
-            valoresMuestra = temp;
+            
         }
 
         
         public override double[] generarSerie(int cantidadNumerosAGenerar) {
-            serieGenerada = new double[cantidadNumerosAGenerar];
+            tamañoMuestra = cantidadNumerosAGenerar;
+            serieGenerada = new double[] { 14, 7, 13, 16, 16, 13, 14, 17, 15, 16, 13, 15, 10, 15, 16, 14, 12, 17, 14, 12, 13, 20, 8, 17, 19, 11, 12, 17, 9, 18, 20, 10, 18, 15, 13, 16, 24, 18, 16, 18, 12, 14, 20, 15, 10, 13, 21, 23, 15, 18 };
+            /*serieGenerada = new double[cantidadNumerosAGenerar];
             Random rndPoisson = new Random();
 
             for (int i = 0; i < cantidadNumerosAGenerar; i++)
@@ -54,9 +45,19 @@ namespace TP3_VariablesAleatorias.Distribuciones
                     x++;
                 }
                 while (p >= a);
-                SerieGenerada[i] = x;
-            }
-            return SerieGenerada;
+                serieGenerada[i] = x;
+            }*/
+
+            var temp = Array.ConvertAll(serieGenerada, item => (int)item);
+            valoresMuestra = temp.Distinct().ToArray();
+            Array.Sort(valoresMuestra); 
+            calcularIntervalosDesde();
+            calcularIntervalosHasta();
+            calcularFrecuenciasObservadas();
+            calcularProbabilidadEsperada();
+            calcularFrecuenciasEsperadas();
+
+            return serieGenerada;
         }
 
         public override bool esPoisson(){
@@ -79,21 +80,29 @@ namespace TP3_VariablesAleatorias.Distribuciones
 
         public override void calcularFrecuenciasEsperadas()
         { 
-            double[] frecuenciasEsperadasPoisson = new double[valoresMuestra.Length];
+            frecuenciasEsperadas = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
             {
-                frecuenciasEsperadasPoisson[i] = (int) Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
+                frecuenciasEsperadas[i] = Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
             } 
         }
 
         public override void calcularFrecuenciasObservadas()
         {
-            frecuenciasObservadas = new int[valoresMuestra.Length];
-            for (int i = 0; i < serieGenerada.Length ; i++)
+            frecuenciasObservadas = new int[valoresMuestra.Max() - valoresMuestra.Min()];
+            for (int i = 0; i < serieGenerada.Length; i++)
             {
-                frecuenciasObservadas[(int)serieGenerada[i]] += 1; 
-            } 
+                int contadorIntervalos = 0;
+
+                while (serieGenerada[i] != valoresMuestra[contadorIntervalos])
+                {
+                    contadorIntervalos++;
+                }
+                frecuenciasObservadas[contadorIntervalos] += 1;
+            }
         }
+    
+    
 
         
         public override void calcularProbabilidadEsperada()
@@ -114,17 +123,30 @@ namespace TP3_VariablesAleatorias.Distribuciones
         }
         public (string, string, string, string) obtenerFila(int indice)
         {
-            return ("", "", "", "");
+            return (valoresMuestra[indice].ToString(), frecuenciasObservadas[indice].ToString(), probabilidadesEsperadas[indice].ToString() , frecuenciasEsperadas[indice].ToString());
         }
 
         public override string[] getColumnas()
         {
-            throw new NotImplementedException();
+            return new string[] { "Valor", "FO", "PE", "FE" };
         }
 
         public override DataTable generarTabla()
         {
-            throw new NotImplementedException();
+            DataTable tabla = new DataTable();
+            // cabecera 
+            string[] columnasTXT = this.getColumnas();
+            for (int i = 0; i < columnasTXT.Length; i++)
+                tabla.Columns.Add(columnasTXT[i]);
+
+            // filas
+            for (int i = 0; i < this.valoresMuestra.Length; i++)
+            {
+                var (valor, fo, pe, fe) = this.obtenerFila(i);
+                tabla.Rows.Add(valor, fo, pe, fe);
+            }
+
+            return tabla;
         }
     }
 }
