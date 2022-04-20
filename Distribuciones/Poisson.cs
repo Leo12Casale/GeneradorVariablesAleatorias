@@ -95,7 +95,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
             frecuenciasEsperadas = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
             {
-                frecuenciasEsperadas[i] = (int) Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
+                //TODO: está fallando acá
+                frecuenciasEsperadas[i] = Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
             } 
         }
 
@@ -122,6 +123,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
             } 
         }
 
+        //TODO: revisar tipo que devuelve
         private ulong factorial(int input)
         {
             ulong result = 1;
