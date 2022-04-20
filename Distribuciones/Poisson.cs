@@ -26,8 +26,11 @@ namespace TP3_VariablesAleatorias.Distribuciones
         
         public override double[] generarSerie(int cantidadNumerosAGenerar) {
             tamañoMuestra = cantidadNumerosAGenerar;
-            serieGenerada = new double[] { 14, 7, 13, 16, 16, 13, 14, 17, 15, 16, 13, 15, 10, 15, 16, 14, 12, 17, 14, 12, 13, 20, 8, 17, 19, 11, 12, 17, 9, 18, 20, 10, 18, 15, 13, 16, 24, 18, 16, 18, 12, 14, 20, 15, 10, 13, 21, 23, 15, 18 };
-            /*serieGenerada = new double[cantidadNumerosAGenerar];
+            /*serieGenerada = new double[] { 14, 7, 13, 16, 16, 13, 14, 17, 15, 16, 13, 15, 10, 15, 16, 14, 12, 17, 14, 12, 13, 20, 8, 17, 19, 11, 12, 17, 9, 18, 20, 10, 18, 15, 13, 16, 24, 18, 16, 18, 12, 14, 20, 15, 10, 13, 21, 23, 15, 18 };
+            //TODO: Borrar esta escritura a la media
+            media = 15.04;
+            tamañoMuestra = serieGenerada.Length; */
+            serieGenerada = new double[cantidadNumerosAGenerar];
             Random rndPoisson = new Random();
 
             for (int i = 0; i < cantidadNumerosAGenerar; i++)
@@ -46,7 +49,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 }
                 while (p >= a);
                 serieGenerada[i] = x;
-            }*/
+            }
 
             crearArregloValores();
 
@@ -95,8 +98,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
             frecuenciasEsperadas = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
             {
-                //TODO: está fallando acá
-                frecuenciasEsperadas[i] = Math.Ceiling(probabilidadesEsperadas[i] * tamañoMuestra);
+                //TODO: está fallando acá. Valen: creo que no más
+                frecuenciasEsperadas[i] = Math.Round(probabilidadesEsperadas[i] * tamañoMuestra);
             } 
         }
 
@@ -118,12 +121,15 @@ namespace TP3_VariablesAleatorias.Distribuciones
         {
             probabilidadesEsperadas = new double[valoresMuestra.Length];
             for (int i = 0; i < valoresMuestra.Length; i++)
-            {
-                probabilidadesEsperadas[i] = (Math.Pow(media, valoresMuestra[i])*Math.Pow(Math.E, -media)) / (factorial(valoresMuestra[i]));
+            { 
+                double cociente = Math.Pow(media, valoresMuestra[i]) * Math.Pow(Math.E, -media);
+                for (int j = 1; j <= valoresMuestra[i]; j++) // factorial
+                    cociente *= 1 / (double) j; 
+                probabilidadesEsperadas[i] = cociente; 
             } 
         }
 
-        //TODO: revisar tipo que devuelve
+        //TODO: Eliminar
         private ulong factorial(int input)
         {
             ulong result = 1;
