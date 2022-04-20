@@ -36,7 +36,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
             for (int i = 0; i < probabilidadesEsperadas.Length; i++)
             {
                 marcaClase[i] = (intervalosHasta[i] + intervalosDesde[i]) / 2;
-                probabilidadesEsperadas[i] = (Math.Pow(Math.E, (-0.5*Math.Pow((marcaClase[i]-media)/desviacionEstandar, 2)))) / (desviacionEstandar * Math.Sqrt(2*Math.PI));
+                probabilidadesEsperadas[i] = ((Math.Pow(Math.E, (-0.5*Math.Pow((marcaClase[i]-media)/desviacionEstandar, 2)))) / (desviacionEstandar * Math.Sqrt(2*Math.PI))) * (intervalosHasta[i] - intervalosDesde[i]);
             } 
         }
         public (string, string, string, string, string, string) obtenerFila(int indice)

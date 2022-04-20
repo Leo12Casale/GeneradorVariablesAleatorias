@@ -121,14 +121,14 @@ namespace TP3_VariablesAleatorias.Distribuciones
             for (int i = 0; i < serieGenerada.Length; i++)
             {
                 int contadorIntervalos = 0;
-                if (serieGenerada[i] > intervalosHasta[cantidadIntervalos - 1]) {
+                if (serieGenerada[i] >= intervalosDesde[cantidadIntervalos - 1]) {
                     frecuenciasObservadas[cantidadIntervalos - 1] += 1;
                     continue;
                 }
 
-                while (serieGenerada[i] > intervalosHasta[contadorIntervalos])
+                while (serieGenerada[i] >= intervalosHasta[contadorIntervalos])
                 {
-                    contadorIntervalos++;
+                    contadorIntervalos+= 1;
                 }
                 frecuenciasObservadas[contadorIntervalos] += 1;
                 }

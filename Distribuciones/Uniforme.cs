@@ -63,7 +63,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
         public override void calcularIntervalosDesde()
         {
             intervalosDesde = new double[cantidadIntervalos];
-            double acumulador = 0;
+            double acumulador = A;
             double tamañoIntervalo = (B - A) / (double)cantidadIntervalos;
             for (int i = 0; i < intervalosDesde.Length; i++)
             {
@@ -75,32 +75,51 @@ namespace TP3_VariablesAleatorias.Distribuciones
         {
             intervalosHasta = new double[cantidadIntervalos];
             double tamañoIntervalo = (B - A) / (double)cantidadIntervalos;
-            double acumulador = tamañoIntervalo;
+            double acumulador = A + tamañoIntervalo;
             for (int i = 0; i < intervalosHasta.Length; i++)
             {
                 intervalosHasta[i] = acumulador;
                 acumulador += tamañoIntervalo;
             }
         }
-        public override void calcularFrecuenciasObservadas()
+        /*public override void calcularFrecuenciasObservadas()
         {
             frecuenciasObservadas = new int[cantidadIntervalos];
-            double tamañoIntervalo = (B * 1.000001 - A) / (double)cantidadIntervalos;
+            
+              for (int i = 0; i < serieGenerada.Length; i++)
+                {
+                   int contadorIntervalos = 0;
+
+                if (serieGenerada[i] > intervalosHasta[cantidadIntervalos - 1])
+                {
+                    frecuenciasObservadas[cantidadIntervalos - 1] += 1;
+                    continue;
+                }
+
+                while (serieGenerada[i] >= intervalosHasta[contadorIntervalos])
+                   {
+                       contadorIntervalos++;
+                   }
+                    frecuenciasObservadas[contadorIntervalos] += 1;
+              }
+            
+
+            /*double tamañoIntervalo = (B * 1.000001 - A) / (double)cantidadIntervalos;
             for (int i = 0; i < serieGenerada.Length; i++)
             {
                 int indice = (int)Math.Floor(serieGenerada[i] / tamañoIntervalo);
                 frecuenciasObservadas[indice] += 1;
             }
-        }
+        }*/
 
         public override void calcularFrecuenciasEsperadas()
         {
             frecuenciasEsperadas = new double[cantidadIntervalos];
-            int frecuenciaEsperadaUniforme =  tamañoMuestra/cantidadIntervalos;
+           
             for (int i = 0; i < cantidadIntervalos; i++)
             {
-                frecuenciasEsperadas[i] = frecuenciaEsperadaUniforme;
-                //frecuenciasEsperadas[i] = probabilidadesEsperadas[i] * tamañoMuestra;
+               
+                frecuenciasEsperadas[i] = probabilidadesEsperadas[i] * tamañoMuestra;
             }
         }
         public override int getCantDatosEmpiricos()
@@ -114,7 +133,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
             
             for (int i = 0; i < probabilidadesEsperadas.Length; i++)
             {
-                probabilidadesEsperadas[i] = (1) / (B-A);
+                probabilidadesEsperadas[i] = (1) / (double) (cantidadIntervalos);
             }
         }
 
