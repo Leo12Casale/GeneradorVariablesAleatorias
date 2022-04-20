@@ -101,56 +101,6 @@ namespace TP3_VariablesAleatorias.Presentaciones
             generarGrafico();
         }
 
-        private void generarGrafico()
-        {
-            if (distribucion == null)
-            {
-                MessageBox.Show("Debe generar datos para graficar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            int[] frecuenciasObservadas = distribucion.getFrecuenciasObservadas();
-            int cantidadIntervalos = frecuenciasObservadas.Length;
-            double[] frecuenciasEsperadas = distribucion.getFrecuenciasEsperadas();
-            double[] intervalosDesde = distribucion.getIntervalosDesde();
-            double[] intervalosHasta = distribucion.getIntervalosHasta();
-            double min = intervalosDesde[0];
-            double max = intervalosHasta[frecuenciasObservadas.Length - 1];
-            //string[] labelsIntervalos = distribucion.getIntervalos();
-
-            if (frecuenciasObservadas == null || frecuenciasObservadas.Length == 0)
-            {
-                MessageBox.Show("Debe generar datos para graficar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            grafico.Show();
-             
-            double offsetX = (intervalosHasta[0] - intervalosDesde[0]);
-            if (distribucion.esPoisson()) offsetX = 2;
-            grafico.ChartAreas[0].AxisX.Minimum = min - offsetX;
-            grafico.ChartAreas[0].AxisX.Maximum = max + offsetX;
-
-
-            grafico.Series[0].Points.Clear();
-            grafico.Series[1].Points.Clear();
-            Series serieEsperada = grafico.Series[0];
-            Series serieObtenida = grafico.Series[1];
-
-            for (int i = 0; i < frecuenciasObservadas.Length; i++)
-            {
-                double xCoord = intervalosDesde[i];
-                int pointEsperado = serieEsperada.Points.AddXY(xCoord, frecuenciasEsperadas[i]);
-                int pointObtenido = serieObtenida.Points.AddXY(xCoord, frecuenciasObservadas[i]);
-
-                string labelIntervalo = "[" + intervalosDesde[i] + " - " + intervalosHasta[i] + ")";
-                if (distribucion.esPoisson())
-                    labelIntervalo = intervalosDesde[i].ToString();
-                serieEsperada.Points[pointEsperado].ToolTip = labelIntervalo + ": " + frecuenciasEsperadas[i];
-                serieObtenida.Points[pointObtenido].ToolTip = labelIntervalo + ": " + frecuenciasObservadas[i];
-            }
-        }
-
         private int getIntervalos()
         {
             switch (cboIntervalos.SelectedIndex)
@@ -182,5 +132,57 @@ namespace TP3_VariablesAleatorias.Presentaciones
         {
             resetForm();
         }
+
+        #region Grafico
+
+        private void generarGrafico()
+        {
+            if (distribucion == null)
+            {
+                MessageBox.Show("Debe generar datos para graficar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int[] frecuenciasObservadas = distribucion.getFrecuenciasObservadas();
+            double[] frecuenciasEsperadas = distribucion.getFrecuenciasEsperadas();
+            double[] intervalosDesde = distribucion.getIntervalosDesde();
+            double[] intervalosHasta = distribucion.getIntervalosHasta();
+            double min = intervalosDesde[0];
+            double max = intervalosHasta[frecuenciasObservadas.Length - 1];
+            //string[] labelsIntervalos = distribucion.getIntervalos();
+
+            if (frecuenciasObservadas == null || frecuenciasObservadas.Length == 0)
+            {
+                MessageBox.Show("Debe generar datos para graficar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            grafico.Show();
+
+            double offsetX = (intervalosHasta[0] - intervalosDesde[0]);
+            if (distribucion.esPoisson()) offsetX = 2;
+            grafico.ChartAreas[0].AxisX.Minimum = min - offsetX;
+            grafico.ChartAreas[0].AxisX.Maximum = max + offsetX;
+
+
+            grafico.Series[0].Points.Clear();
+            grafico.Series[1].Points.Clear();
+            Series serieEsperada = grafico.Series[0];
+            Series serieObtenida = grafico.Series[1];
+
+            for (int i = 0; i < frecuenciasObservadas.Length; i++)
+            {
+                double xCoord = intervalosDesde[i];
+                int pointEsperado = serieEsperada.Points.AddXY(xCoord, frecuenciasEsperadas[i]);
+                int pointObtenido = serieObtenida.Points.AddXY(xCoord, frecuenciasObservadas[i]);
+
+                string labelIntervalo = "[" + intervalosDesde[i] + " - " + intervalosHasta[i] + ")";
+                if (distribucion.esPoisson())
+                    labelIntervalo = intervalosDesde[i].ToString();
+                serieEsperada.Points[pointEsperado].ToolTip = labelIntervalo + ": " + frecuenciasEsperadas[i];
+                serieObtenida.Points[pointObtenido].ToolTip = labelIntervalo + ": " + frecuenciasObservadas[i];
+            }
+        }
+        #endregion
     }
 }
