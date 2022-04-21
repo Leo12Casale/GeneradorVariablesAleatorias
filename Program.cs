@@ -17,7 +17,7 @@ namespace TP3_VariablesAleatorias
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frm_principal());
+            Application.Run(new frm_splash_screen());
         }
     }
 }

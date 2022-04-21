@@ -10,7 +10,7 @@ namespace TP3_VariablesAleatorias.Presentaciones
     public partial class frm_principal : Form
     {
         private Distribucion distribucion;
-        private PruebaBondad pruebasBondad;
+        
         public frm_principal()
         {  
             InitializeComponent(); 

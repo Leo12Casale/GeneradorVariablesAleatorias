@@ -43,7 +43,6 @@ namespace TP3_VariablesAleatorias.Presentaciones
             // 
             this.dgvChi.AllowUserToAddRows = false;
             this.dgvChi.AllowUserToDeleteRows = false;
-            this.dgvChi.AllowUserToResizeColumns = false;
             this.dgvChi.AllowUserToResizeRows = false;
             this.dgvChi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
