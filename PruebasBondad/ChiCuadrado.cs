@@ -108,7 +108,10 @@ namespace TP3_VariablesAleatorias.PruebasBondad
         {
             chiCalculado = chisAcumulado[chisAcumulado.Length - 1]; // La última celda del acumulado tiene el total
             int gradosLibertad = chisAcumulado.Length - 1 - distribucion.getCantDatosEmpiricos();
-            chiTabulado = tabla[gradosLibertad];
+            if(distribucion.esPoisson() && gradosLibertad > 30)
+                chiTabulado = -0.0054 * Math.Pow(gradosLibertad, 5) + 0.8676 * Math.Pow(gradosLibertad, 4) - 33.373 * Math.Pow(gradosLibertad, 3) + 480.92 * Math.Pow(gradosLibertad, 2) - 1921.4 * gradosLibertad + 3755;
+            else
+                chiTabulado = tabla[gradosLibertad];
         }
 
         protected override bool noSeRechaza()

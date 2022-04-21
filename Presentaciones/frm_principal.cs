@@ -99,6 +99,11 @@ namespace TP3_VariablesAleatorias.Presentaciones
                 MessageBox.Show("Verifique los valores del intervalo [A; B]. 'B' debe ser mayor a 'A'.", "Generación de Valores", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+            if (getIntervalos() > nudValores.Value)
+            {
+                MessageBox.Show("La cantidad de intervalos no puede ser mayor a la cantidad de números generados", "Generación de Valores", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
             return true;
         }
 
@@ -221,6 +226,11 @@ namespace TP3_VariablesAleatorias.Presentaciones
                 serieObtenida.Points[pointObtenido].ToolTip = labelIntervalo + ": " + frecuenciasObservadas[i];
             }
         }
-        #endregion 
+        #endregion
+
+        private void grafico_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

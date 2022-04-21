@@ -47,7 +47,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
 
             for (int i = 0; i < cantidadNumerosAGenerar; i++)
             {
-                this.serieGenerada[i] = Math.Truncate(cantDigitos * (this.A + numerosRND[i] * (this.B - this.A))) / cantDigitos;
+                //this.serieGenerada[i] = Math.Truncate(cantDigitos * (this.A + numerosRND[i] * (this.B - this.A))) / cantDigitos;
+                this.serieGenerada[i] = this.A + numerosRND[i] * (this.B - this.A);
             }
 
             calcularIntervalosDesde();
@@ -82,7 +83,7 @@ namespace TP3_VariablesAleatorias.Distribuciones
                 acumulador += tamañoIntervalo;
             }
         }
-        /*public override void calcularFrecuenciasObservadas()
+        public override void calcularFrecuenciasObservadas()
         {
             frecuenciasObservadas = new int[cantidadIntervalos];
             
@@ -109,8 +110,8 @@ namespace TP3_VariablesAleatorias.Distribuciones
             {
                 int indice = (int)Math.Floor(serieGenerada[i] / tamañoIntervalo);
                 frecuenciasObservadas[indice] += 1;
-            }
-        }*/
+            }*/
+        }
 
         public override void calcularFrecuenciasEsperadas()
         {

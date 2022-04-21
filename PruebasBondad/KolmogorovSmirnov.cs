@@ -81,7 +81,7 @@ namespace TP3_VariablesAleatorias.PruebasBondad
             pO[0] = frecuenciasObservadas[0] / (double) N;
             acPE[0] = pE[0];
             acPO[0] = pO[0];
-            absDiffAc[0] = acPO[0] - acPE[0];
+            absDiffAc[0] = Math.Abs(acPO[0] - acPE[0]);
             columnaMaximos[0] = absDiffAc[0];
             for (int i = 1; i < frecuenciasObservadas.Length; i++)
             {
