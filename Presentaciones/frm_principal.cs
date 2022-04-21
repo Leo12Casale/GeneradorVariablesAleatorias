@@ -17,7 +17,11 @@ namespace TP3_VariablesAleatorias.Presentaciones
         }
         private void frm_principal_Load(object sender, EventArgs e)
         {
-            cboDistribucion.SelectedIndex = 0;
+            cboDistribucion.SelectedIndex = 0;            
+            cboIntervalos.SelectedIndex = 0;
+
+            btnKS.Enabled = false;
+            btnChi.Enabled = false;
         }
 
         private void disableParameters()
@@ -51,6 +55,8 @@ namespace TP3_VariablesAleatorias.Presentaciones
             nudValores.Enabled = true;
             lblIntervalos.Enabled = true;
             cboIntervalos.Enabled = true;
+            btnKS.Enabled = false;
+            btnChi.Enabled = false;
 
             if (cboDistribucion.SelectedIndex == 0)
             {
@@ -79,6 +85,21 @@ namespace TP3_VariablesAleatorias.Presentaciones
             }
         }
 
+        private bool validateParameters()
+        {
+            if (nudValores.Value == 0)
+            {
+                MessageBox.Show("La cantidad de valores a generar debe ser mayor a 0.", "Generación de Valores", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (cboDistribucion.SelectedIndex == 0 & nudB.Value <= nudA.Value)
+            {
+                MessageBox.Show("Verifique los valores del intervalo [A; B]. 'B' debe ser mayor a 'A'.", "Generación de Valores", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
         private void cboMetodo_SelectedIndexChanged(object sender, EventArgs e)
         {
             resetForm();
@@ -92,15 +113,18 @@ namespace TP3_VariablesAleatorias.Presentaciones
 
         private void btnGenerar_Click(object sender, EventArgs e)
         {
-            disableParameters();
-
-            distribucion = obtenerDistribucion();
-            distribucion.generarSerie((int)nudValores.Value);
-            dgvTabla.DataSource = distribucion.generarTabla();
-
-            generarGrafico();
+            if (validateParameters())
+            {
+                distribucion = obtenerDistribucion();
+                distribucion.generarSerie((int)nudValores.Value);
+                dgvTabla.DataSource = distribucion.generarTabla(); 
+                generarGrafico();
+                disableParameters();
+                if (!distribucion.esPoisson()) btnKS.Enabled = true;
+                btnChi.Enabled = true;                
+            } 
         }
-
+        
         private int getIntervalos()
         {
             switch (cboIntervalos.SelectedIndex)
@@ -112,7 +136,7 @@ namespace TP3_VariablesAleatorias.Presentaciones
                 default: return 8;
             }
         }
-
+        
         private Distribucion obtenerDistribucion()
         {
             if (cboDistribucion.SelectedIndex == 0)
@@ -132,6 +156,18 @@ namespace TP3_VariablesAleatorias.Presentaciones
         {
             resetForm();
         }
+        
+        private void btnChi_Click(object sender, EventArgs e)
+        {
+            frm_chi_cuadrado frm_chi = new frm_chi_cuadrado(distribucion);
+            frm_chi.ShowDialog();
+        }
+        
+        private void btnKS_Click(object sender, EventArgs e)
+        {
+            frm_kolmogorov_smirnov frm_ks = new frm_kolmogorov_smirnov(distribucion);
+            frm_ks.ShowDialog();
+        } 
 
         #region Grafico
 
@@ -183,6 +219,6 @@ namespace TP3_VariablesAleatorias.Presentaciones
                 serieObtenida.Points[pointObtenido].ToolTip = labelIntervalo + ": " + frecuenciasObservadas[i];
             }
         }
-        #endregion
+        #endregion 
     }
 }
