@@ -70,11 +70,13 @@ namespace TP3_VariablesAleatorias.Presentaciones
             {
                 lblMedia.Enabled = true;
                 nudMedia.Enabled = true;
+                nudMedia.Minimum = (decimal)0.00001;
             }
             else if (cboDistribucion.SelectedIndex == 2 || cboDistribucion.SelectedIndex == 3)
             {
                 lblMedia.Enabled = true;
                 nudMedia.Enabled = true;
+                nudMedia.Minimum = -10000;
                 lblDesviacion.Enabled = true;
                 nudDesviacion.Enabled = true;
             }
